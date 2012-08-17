@@ -14,7 +14,7 @@ mvn install -U -debug
 ERR_CODE=`echo $?`
 popd
 
-if [ x$ERR_CODE != "x0"] ; then
+if [ x$ERR_CODE != "x0" ] ; then
     exit $ERR_CODE;
 fi
 
