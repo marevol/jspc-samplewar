@@ -6,6 +6,126 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
   <description/>
+  <profiles>
+    <profile>
+      <id>skip-jspc</id>
+      <properties>
+        <webXml></webXml>
+      </properties>
+    </profile>
+    <profile>
+      <id>tomcat5</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jspc-maven-plugin</artifactId>
+            <version>2.0-alpha-4-SNAPSHOT</version>
+            <configuration>
+              <injectString>&lt;!-- [INSERT FRAGMENT HERE] --&gt;</injectString>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+            </executions>
+            <!-- Tomcat 5 JSP compiler -->
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.mojo.jspc</groupId>
+                <artifactId>jspc-compiler-tomcat5</artifactId>
+                <version>2.0-alpha-4-SNAPSHOT</version>
+              </dependency>
+              <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.4.1</version>
+              </dependency>
+              <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl104-over-slf4j</artifactId>
+                <version>1.4.1</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <webXml>${basedir}/target/jspweb.xml</webXml>
+      </properties>
+    </profile>
+    <profile>
+      <id>tomcat6</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jspc-maven-plugin</artifactId>
+            <version>2.0-alpha-4-SNAPSHOT</version>
+            <configuration>
+              <injectString>&lt;!-- [INSERT FRAGMENT HERE] --&gt;</injectString>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+            </executions>
+            <!-- Tomcat 6 JSP compiler -->
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.mojo.jspc</groupId>
+                <artifactId>jspc-compiler-tomcat6</artifactId>
+                <version>2.0-alpha-4-SNAPSHOT</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <webXml>${basedir}/target/jspweb.xml</webXml>
+      </properties>
+    </profile>
+    <profile>
+      <id>tomcat7</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jspc-maven-plugin</artifactId>
+            <version>2.0-alpha-4-SNAPSHOT</version>
+            <configuration>
+              <injectString>&lt;!-- [INSERT FRAGMENT HERE] --&gt;</injectString>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+            </executions>
+            <!-- Tomcat 7 JSP compiler -->
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.mojo.jspc</groupId>
+                <artifactId>jspc-compiler-tomcat7</artifactId>
+                <version>2.0-alpha-4-SNAPSHOT</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <webXml>${basedir}/target/jspweb.xml</webXml>
+      </properties>
+    </profile>
+  </profiles>
   <build>
     <finalName>jspc-samplewar</finalName>
     <plugins>
@@ -28,59 +148,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.1-beta-1</version>
-        <configuration>
-          <warSourceExcludes>WEB-INF/classes/**/*.*,WEB-INF/lib/*.jar</warSourceExcludes>
-          <!-- jspc -->
-          <webXml>${basedir}/target/jspweb.xml</webXml>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo.jspc</groupId>
-        <artifactId>jspc-maven-plugin</artifactId>
-        <version>2.0-alpha-4-SNAPSHOT</version>
-        <configuration>
-          <injectString>&lt;!-- [INSERT FRAGMENT HERE] --&gt;</injectString>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <!-- Tomcat 5 JSP compiler
-        <dependencies> 
-          <dependency>              
-            <groupId>org.codehaus.mojo.jspc</groupId>
-            <artifactId>jspc-compiler-tomcat5</artifactId>
-            <version>2.0-alpha-4-SNAPSHOT</version>
-          </dependency>
-          <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.4.1</version>
-          </dependency>
-          <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl104-over-slf4j</artifactId>
-            <version>1.4.1</version>
-          </dependency>
-        </dependencies>
--->
-        <!-- Tomcat 6 JSP compiler 
--->
-        <dependencies> 
-          <dependency>              
-            <groupId>org.codehaus.mojo.jspc</groupId>
-            <artifactId>jspc-compiler-tomcat6</artifactId>
-            <version>2.0-alpha-4-SNAPSHOT</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
@@ -132,6 +199,15 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.1-beta-1</version>
+        <configuration>
+          <warSourceExcludes>WEB-INF/classes/**/*.*,WEB-INF/lib/*.jar</warSourceExcludes>
+          <webXml>${webXml}</webXml>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -266,7 +342,7 @@
       <artifactId>geronimo-jta_1.1_spec</artifactId>
       <version>1.0</version>
     </dependency>
-    <!-- If you want to use J2EE 1.4 server(not Tomcat), 
+    <!-- If you want to use J2EE 1.4 server(not Tomcat),
          add geronimo-jta_1.1_spec-1.0-tsr.jar -->
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
