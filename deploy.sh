@@ -31,10 +31,28 @@ if [ "x$CONTENT_CHECK" = "xon" ] ; then
 	rm $TOMCAT_HOME_DIR/logs/*
     echo "Starting Tomcat ${VER}..."
 	bash $TOMCAT_HOME_DIR/bin/startup.sh
-    sleep 3
+    count=0
+    while [ $count -lt 30 ] ; do
+        grep "Server startup" $TOMCAT_HOME_DIR/logs/catalina.out > /dev/null 2>&1
+        rst=$?
+        if [ $rst -eq 0 ] ; then
+            count=30
+        else
+            sleep 1
+            count=`expr $count + 1`
+        fi
+    done
+    HEAD_FILE=/tmp/head_$$.txt
+    CONTENT_FILE=/tmp/content_$$.txt
+    curl -D $HEAD_FILE -o $CONTENT_FILE http://localhost:8080/jspc-samplewar/
+    echo "### HEAD BEGIN ###"
+    cat $HEAD_FILE
+    echo "### HEAD END ###"
     echo "### CONTENT BEGIN ###"
-    curl http://localhost:8080/jspc-samplewar/
+    cat $CONTENT_FILE
     echo "### CONTENT END ###"
+    rm $HEAD_FILE
+    rm $CONTENT_FILE
     echo "Shuting down Tomcat ${VER}..."
 	bash $TOMCAT_HOME_DIR/bin/shutdown.sh
 fi
